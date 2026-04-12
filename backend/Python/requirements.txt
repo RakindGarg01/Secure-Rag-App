@@ -1,0 +1,12 @@
+fastapi
+uvicorn
+pdfplumber==0.11.8
+langchain
+langchain-community
+langchain-core
+langchain-text-splitters
+faiss-cpu
+python-dotenv
+langchain-google-genai
+google-generativeai
+google-genai
