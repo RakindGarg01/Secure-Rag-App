@@ -10,3 +10,4 @@ python-dotenv
 langchain-google-genai
 google-generativeai
 google-genai
+python-multipart
