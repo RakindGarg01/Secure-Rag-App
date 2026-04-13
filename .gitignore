@@ -1,2 +1,5 @@
+backend/Python/__pycache__
 backend/Python/venv/
-backend/Python/new.Python
+backend/Python/data/
+backend/Python/new.py
+backend/Python/.env
