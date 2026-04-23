@@ -2,6 +2,7 @@ import express from "express"
 import dotenv from "dotenv"
 import cors from "cors"
 import dbConnection from "./DB/db_connection.js";
+import authRoutes from "./routes/user.route.js"
 
 dotenv.config();
 const app = express();
@@ -17,6 +18,8 @@ app.get('/' , (req,res) => {
      })
 })
 
+
+app.use('/api/auth' , authRoutes);
 
 
 
