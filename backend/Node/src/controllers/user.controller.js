@@ -1,3 +1,6 @@
+import jwt from 'jsonwebtoken';
+import bcrypt from 'bcryptjs';
+import validator from 'validator';
 import { User } from "../models/user.model.js";
 
 
@@ -27,21 +30,58 @@ export const loginUser = async (req , res)=>{
 
 export const signUpUser = async (req , res)=>{
      try {
-          
-          const {userName , emailId , password } = req.body;
+
+          const userName = req.body.userName?.trim();
+          const emailId = req.body.emailId?.trim();
+          const password = req.body.password
+
+          // Validation for Required Fields.
+          if ( !userName || !emailId || !password ){
+               res.status(400).json({
+                    "message" : "All Fields are Required..."
+               })
+          }
+
+          // Validate Email
+          if ( !validator.isEmail(emailId) ){
+               res.status(400).json({
+                    "message" : "Pls provide valid email address..."
+               })
+          }
+
+          // Validate Strong Password
+          if(!validator.isStrongPassword(password , {
+               minLength    : 8 ,
+               minLowercase : 1 ,
+               minUppercase : 1 ,
+               minNumbers   : 1 ,
+               minSymbols   : 1
+          })){
+               return res.status(400).json({
+                    message: "Password must be at least 8 characters and include uppercase, lowercase, number and symbol..."
+               });
+          }
+
+          //Validate UserName
+
+          if (!/^[a-zA-Z0-9_]{3,20}$/.test(userName)) {
+               return res.status(400).json({
+                    message: "Username must be 3-20 characters and contain only letters, numbers or underscores..."
+               });
+          }
 
           const userFound = await User.findOne({
                $or: [{ emailId }, { userName: userName.toLowerCase() }]
           });
 
           if( userFound ){
-               if(userFound.emailId = emailId){
+               if(userFound.emailId === emailId){
                     res.status(404).json({
                          "message" : "User Already Exist. Kindly Login..."
                     })
                     return;
                }
-               if(userFound.userName = userName.toLowerCase()){
+               if(userFound.userName === userName.toLowerCase()){
                     res.status(404).json({
                          "message" : "UserName is already taken. Pls choose different ..."
                     })
